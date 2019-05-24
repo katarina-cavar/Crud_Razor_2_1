@@ -2,17 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Crud_Razor_2_1.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace Crud_Razor_2_1.Pages.BookList
 {
-    public class IndexModel : PageModel
+  public class IndexModel : PageModel
+  {
+    private readonly ApplicationDbContext _db;
+    public IEnumerable<Book> Books { get; set; }
+
+    public IndexModel(ApplicationDbContext db)
     {
-      public string someData { get; set; }
-      public void OnGet()
-      {
-      someData = "This is first Property!";
-      }
+      _db = db;
     }
+
+    public async Task OnGet()
+    {
+      Books = await _db.Books.ToListAsync();
+    }
+  }
 }
